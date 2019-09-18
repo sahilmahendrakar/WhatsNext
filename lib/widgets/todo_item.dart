@@ -7,28 +7,27 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
-   bool _value = false;
+   bool _done = false;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      
       children: <Widget>[
-        SizedBox(width: 20),
+        SizedBox(width: 10, height: 35),
         Center(
           child: InkWell(
             onTap: () {
               setState(() {
-                _value = !_value;
+                _done = !_done;
               });
             },
             child: Container(
               decoration: BoxDecoration(
-                shape: BoxShape.circle, color: _value ? Colors.blue :Colors.white, border: Border.all(color: Colors.black45)),
+                shape: BoxShape.circle, color: _done ? Colors.blue :Colors.white, border: Border.all(color: Colors.black45)),
               child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: _value
+                padding: const EdgeInsets.all(0),
+                child: _done
                     ? 
                     Icon(
                         Icons.check,
@@ -45,7 +44,14 @@ class _TodoItemState extends State<TodoItem> {
           ),
         ),
         SizedBox(width: 10),
-        Text("This is an example task", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),),
+        Flexible(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("This is an example task", style: TextStyle(color: _done ? Colors.grey[700] : Colors.black, fontSize: 20, fontWeight: FontWeight.w400, decoration: _done ? TextDecoration.lineThrough : TextDecoration.none),),
+            ],
+          ),
+        ),
       ],
     );
   }
