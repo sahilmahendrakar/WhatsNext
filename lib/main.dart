@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import './widgets/todo_item.dart';
 import './widgets/todo_list.dart';
+import './addTask.dart';
 
 void main() => runApp(MyApp());
+
+List<TodoItem> todo = [TodoItem()];
 
 class MyApp extends StatelessWidget {
   @override
@@ -27,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TodoItem> _todo = [TodoItem()];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child:ListView.separated (
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                itemCount: _todo.length,
+                itemCount: todo.length,
                 itemBuilder: (BuildContext ctxt, int index) {
                   return new TodoItem();
                 },
@@ -54,8 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _todo.add(TodoItem());
           setState(() {});
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => addTask()),
+          );
         },
         tooltip: 'Add Item',
         child: Icon(Icons.add),
