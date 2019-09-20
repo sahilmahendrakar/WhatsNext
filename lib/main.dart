@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import './widgets/todo_item.dart';
-import './widgets/todo_list.dart';
-import './addTask.dart';
+import './task.dart';
 
 void main() => runApp(MyApp());
 
-List<TodoItem> todo = [TodoItem()];
+List<TodoItem> todo = [];
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 itemCount: todo.length,
                 itemBuilder: (BuildContext ctxt, int index) {
-                  return new TodoItem();
+                  for (final item in todo)
+                    return fillerWidget();
                 },
                 separatorBuilder: (BuildContext context, int index) => const Divider(),
               )
@@ -55,17 +55,63 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {});
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => addTask()),
-          );
-        },
+        onPressed: _addTaskScreen,
         tooltip: 'Add Item',
         child: Icon(Icons.add),
       ),
     );
   }
   
+  Widget fillerWidget() {
+    return TodoItem();
+  }
+
+  Widget list(BuildContext context) {
+    return ReorderableListView (
+      onReorder: (oldIndex, newIndex) {
+        // setState(() {
+        //   _update
+        // })
+      },
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      children: <ListTile>[
+        for (final item in todo)
+          ListTile (
+            leading: TodoItem(), 
+          )
+      ],
+    );
+  }
+
+  //Adds a task
+  void _addTaskScreen() {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Add a new task')
+            ),
+            body: new TextField(
+              autofocus: true,
+              onSubmitted: (val) {
+                _addTask(val);
+                Navigator.pop(context); // Close the add todo screen
+              },
+              decoration: new InputDecoration(
+                hintText: 'Enter something to do...',
+                contentPadding: const EdgeInsets.all(16.0)
+              ),
+            )
+          );
+        }
+      ),
+    );
+  }
+
+  void _addTask(String name) {
+    if(name.length > 0) {
+      setState(() => todo.add(fillerWidget())); //Task(name)
+    }
+  }
 }

@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 
 class Task {
   final String name;
-  final bool completed;
+  //final bool completed;
 
-  Task({
+  Task(
     @required this.name,
-    @required this.completed,
-  });
+    //@required this.completed,
+  );
 }
