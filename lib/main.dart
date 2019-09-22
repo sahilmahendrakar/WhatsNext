@@ -41,15 +41,16 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("What's Next?", style: TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.normal),),
             SizedBox(height: 30),
             Expanded(
-              child:ListView.separated (
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                itemCount: todo.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  for (final item in todo)
-                    return fillerWidget();
-                },
-                separatorBuilder: (BuildContext context, int index) => const Divider(),
-              )
+              child: list(context),
+              // child:ListView.separated (
+              //   padding: const EdgeInsets.symmetric(horizontal: 15),
+              //   itemCount: todo.length,
+              //   itemBuilder: (BuildContext ctxt, int index) {
+              //     for (final item in todo)
+              //       return item;
+              //   },
+              //   separatorBuilder: (BuildContext context, int index) => const Divider(),
+              // )
             )
           ],
         ),
@@ -61,23 +62,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  
-  Widget fillerWidget() {
-    return TodoItem();
-  }
 
   Widget list(BuildContext context) {
     return ReorderableListView (
       onReorder: (oldIndex, newIndex) {
-        // setState(() {
-        //   _update
-        // })
+        setState(() {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          final TodoItem item = todo.removeAt(oldIndex);
+          todo.insert(newIndex, item);
+        });
       },
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: <ListTile>[
         for (final item in todo)
           ListTile (
-            leading: TodoItem(), 
+            key: ValueKey(item), 
+            title: item,
           )
       ],
     );
@@ -111,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addTask(String name) {
     if(name.length > 0) {
-      setState(() => todo.add(fillerWidget())); //Task(name)
+      setState(() => todo.add(TodoItem(name: name,))); //Task(name)
     }
   }
 }

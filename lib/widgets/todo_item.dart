@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatefulWidget {
+  final String name;
+
+  const TodoItem({Key key, this.name}) : super(key: key);
 
   @override
   _TodoItemState createState() => _TodoItemState();
@@ -48,7 +51,7 @@ class _TodoItemState extends State<TodoItem> {
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("This is an example task", style: TextStyle(color: _done ? Colors.grey[700] : Colors.black, fontSize: 20, fontWeight: FontWeight.w400, decoration: _done ? TextDecoration.lineThrough : TextDecoration.none),),
+              Text(widget.name, style: TextStyle(color: _done ? Colors.grey[700] : Colors.black, fontSize: 20, fontWeight: FontWeight.w400, decoration: _done ? TextDecoration.lineThrough : TextDecoration.none),),
             ],
           ),
         ),
