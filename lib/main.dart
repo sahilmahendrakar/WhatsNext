@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import './widgets/todo_item.dart';
 import './task.dart';
 
 void main() => runApp(MyApp());
 
-List<TodoItem> todo = [];
+List<Task> todo = [];
 
 class MyApp extends StatelessWidget {
   @override
@@ -42,15 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 30),
             Expanded(
               child: list(context),
-              // child:ListView.separated (
-              //   padding: const EdgeInsets.symmetric(horizontal: 15),
-              //   itemCount: todo.length,
-              //   itemBuilder: (BuildContext ctxt, int index) {
-              //     for (final item in todo)
-              //       return item;
-              //   },
-              //   separatorBuilder: (BuildContext context, int index) => const Divider(),
-              // )
             )
           ],
         ),
@@ -70,17 +60,23 @@ class _MyHomePageState extends State<MyHomePage> {
           if (newIndex > oldIndex) {
             newIndex -= 1;
           }
-          final TodoItem item = todo.removeAt(oldIndex);
+          final Task item = todo.removeAt(oldIndex);
           todo.insert(newIndex, item);
         });
       },
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      children: <ListTile>[
+      children: <Widget>[
         for (final item in todo)
+          //if (todo.indexOf(item) == 0)
           ListTile (
             key: ValueKey(item), 
             title: item,
-          )
+            
+            // onTap: () {
+            //   setState(() {
+            //     _done = !_done;
+            //   });
+            // },
+          ),
       ],
     );
   }
@@ -113,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addTask(String name) {
     if(name.length > 0) {
-      setState(() => todo.add(TodoItem(name: name,))); //Task(name)
+      setState(() => todo.add(Task(name: name,))); //Task(name)
     }
   }
 }
