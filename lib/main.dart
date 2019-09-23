@@ -81,29 +81,63 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  //Adds a task
+  //Adds a task new page for advanced editing
+  // void _addTaskScreen() {
+  //   Navigator.of(context).push(
+  //     new MaterialPageRoute(
+  //       builder: (context) {
+  //         return new Scaffold(
+  //           appBar: new AppBar(
+  //             title: new Text('Add a new task')
+  //           ),
+  //           body: new TextField(
+  //             autofocus: true,
+  //             onSubmitted: (val) {
+  //               _addTask(val);
+  //               Navigator.pop(context); // Close the add todo screen
+  //             },
+  //             decoration: new InputDecoration(
+  //               hintText: 'Enter something to do...',
+  //               contentPadding: const EdgeInsets.all(16.0)
+  //             ),
+  //           )
+  //         );
+  //       }
+  //     ),
+  //   );
+  // }
+
   void _addTaskScreen() {
-    Navigator.of(context).push(
-      new MaterialPageRoute(
-        builder: (context) {
-          return new Scaffold(
-            appBar: new AppBar(
-              title: new Text('Add a new task')
-            ),
-            body: new TextField(
-              autofocus: true,
-              onSubmitted: (val) {
-                _addTask(val);
-                Navigator.pop(context); // Close the add todo screen
-              },
-              decoration: new InputDecoration(
-                hintText: 'Enter something to do...',
-                contentPadding: const EdgeInsets.all(16.0)
-              ),
-            )
-          );
-        }
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
       ),
+      builder: (BuildContext context){
+          return Container(
+            child: new Wrap(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.symmetric(vertical: 50),),
+              new TextField(
+                autofocus: true,
+                onSubmitted: (val) {
+                  Navigator.pop(context);
+                  _addTask(val);
+                },
+                decoration: new InputDecoration(
+                  hintText: 'Add Task',
+                  contentPadding: const EdgeInsets.all(16.0),
+                  focusedBorder: new UnderlineInputBorder(
+                    borderSide: new BorderSide(color: Colors.white)
+                  ),
+                ),
+              ),
+              Padding (padding: EdgeInsets.symmetric(vertical: 170),),
+            ],
+          ),
+        );
+      }
     );
   }
 
