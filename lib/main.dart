@@ -13,6 +13,12 @@ class MyApp extends StatelessWidget {
       title: 'What\'s Next',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        //fontFamily: 'Montserrat',
+        textTheme: TextTheme(
+          //headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          //title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          //body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
       ),
       home: MyHomePage(title: 'What\'s Next'),
     );
@@ -37,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 50),
-            Text("What's Next?", style: TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.normal),),
+            Text("What's Next?", style: TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.normal),), //.bold
             SizedBox(height: 30),
             Expanded(
               child: list(context),
@@ -66,11 +72,15 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       children: <Widget>[
         for (final item in todo)
-          //if (todo.indexOf(item) == 0)
-          ListTile (
+          Dismissible (
+            background: Container(color: Colors.red),
             key: ValueKey(item), 
-            title: item,
-            
+            onDismissed: (direction) {
+              setState(() {
+                todo.remove(item);
+              });
+            },
+            child: ListTile(title: item),            
             // onTap: () {
             //   setState(() {
             //     _done = !_done;
@@ -120,7 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Padding(padding: EdgeInsets.symmetric(vertical: 50),),
               new TextField(
+                maxLines: 3,
                 autofocus: true,
+                textInputAction: TextInputAction.go,
                 onSubmitted: (val) {
                   Navigator.pop(context);
                   _addTask(val);
@@ -133,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              Padding (padding: EdgeInsets.symmetric(vertical: 170),),
+              Padding (padding: EdgeInsets.symmetric(vertical: 180),),
             ],
           ),
         );
