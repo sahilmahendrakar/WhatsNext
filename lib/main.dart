@@ -169,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _saveTask() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> todoString;
-    for (final item in todo) {
+    for (Task item in todo) {
       todoString.add(item.name);
     }
     await prefs.setStringList('todo', todoString);
@@ -178,7 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
   _loadTodo() async {
     final prefs = await SharedPreferences.getInstance();
     final todoString = prefs.getStringList('todo') ?? 0;
-    for (final item in todoString)
-      _addTask(item);
+    for (String item in todoString)
+      todo.add(Task(name: item,));
+    setState(() {});
   }
 }
