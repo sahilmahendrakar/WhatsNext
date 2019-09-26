@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './task.dart';
 
@@ -34,7 +35,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  
+  @override
+  void initState() {
+    super.initState();
+    _loadTodo();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onSubmitted: (val) {
                   Navigator.pop(context);
                   _addTask(val);
+                  _saveTask();
                 },
                 decoration: new InputDecoration(
                   hintText: 'Add Task',
@@ -157,5 +164,21 @@ class _MyHomePageState extends State<MyHomePage> {
     if(name.length > 0) {
       setState(() => todo.add(Task(name: name,))); //Task(name)
     }
+  }
+
+  _saveTask() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> todoString;
+    for (final item in todo) {
+      todoString.add(item.name);
+    }
+    await prefs.setStringList('todo', todoString);
+  }
+
+  _loadTodo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final todoString = prefs.getStringList('todo') ?? 0;
+    for (final item in todoString)
+      _addTask(item);
   }
 }
