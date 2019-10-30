@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _loadTodo();
+    _loadTask();
   }
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 onSubmitted: (val) {
                   Navigator.pop(context);
                   _addTask(val);
-                  _saveTask();
                 },
                 decoration: new InputDecoration(
                   hintText: 'Add Task',
@@ -163,23 +162,27 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addTask(String name) {
     if(name.length > 0) {
       setState(() => todo.add(Task(name: name,))); //Task(name)
+      _saveTask();
     }
   }
 
   _saveTask() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> todoString;
+    List<String> todoString = new List();
     for (Task item in todo) {
+      print(item.name);
       todoString.add(item.name);
     }
     await prefs.setStringList('todo', todoString);
   }
 
-  _loadTodo() async {
+  _loadTask() async {
     final prefs = await SharedPreferences.getInstance();
-    final todoString = prefs.getStringList('todo') ?? 0;
+    List<String> todoString = new List();
+    todoString = prefs.getStringList('todo') ?? 0;
     for (String item in todoString)
-      todo.add(Task(name: item,));
-    setState(() {});
+      todo.add(Task(name: item));
+    //setState(() {});
+    //prefs.clear();
   }
 }
